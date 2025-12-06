@@ -17,7 +17,6 @@ import (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Args:  cobra.ExactArgs(1),
 	Short: "Adds a file or directory to the .dotfiles repository",
 	Long: `The add command moves the specified file or directory into the ~/.dotfiles
 		directory while preserving its relative path. If the 'symlink_on_add' option is
@@ -32,13 +31,16 @@ func mover(origen, destino string) error {
 func addPathToDotfile(cmd *cobra.Command, args []string) {
 	home := internal.HomePath()
 	dotPath := internal.DotfilesPath()
-	userPath := args[0]
+	var userPath string
 
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	fmt.Println(len(args))
+	if len(args) == 0 {
+		userPath = cwd
+	}
 	if userPath == "." {
 		userPath = cwd
 	}
@@ -54,8 +56,7 @@ func addPathToDotfile(cmd *cobra.Command, args []string) {
 	if err := os.MkdirAll(destinationDir, 0755); err != nil {
 		log.Fatal(err)
 	}
-
-	// Move file/directory
+	// // Move file/directory
 	if err := mover(userPath, fullDestination); err != nil {
 		log.Fatal(err)
 	}
