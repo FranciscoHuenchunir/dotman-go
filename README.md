@@ -1,96 +1,151 @@
-DotmanGO
+# DotmanGO
 
-DotmanGO is a lightweight, fast, and minimalistic dotfiles manager written in Go.
-It helps you organize, version, and synchronize your configuration files without relying on Git or complex setup.
+A lightweight, fast, and minimalistic dotfiles manager written in Go. DotmanGO helps you organize, version, and synchronize your configuration files without relying on Git or complex setups — focusing on simplicity, portability, and predictability.
 
-DotmanGO focuses on simplicity, portability, and predictability.
+## Why DotmanGO?
 
-✨ Features
+I tried GNU Stow — confusing directory structure.  
+I tried Git bare repos — too many arcane commands for something simple.  
+I tried chezmoi — powerful, but do I really need templating to move files?
 
-📂 Manage dotfiles inside a single directory: ~/.dotfiles
+**I just wanted:**
+- Put my dotfiles in one place
+- Have them work in their original locations
+- Not think about it anymore
 
-🔄 Preserve relative paths when adding files
+**DotmanGO does exactly that. Nothing more, nothing less.**
 
-🔗 Optional symbolic link creation (configurable)
+## ✨ Features
 
-🧽 Non-destructive operations — safe by default
+- **📂 Centralized management**: Keep all your dotfiles organized in `~/.dotfiles`
+- **🔄 Path preservation**: Maintains relative directory structure when adding files
+- **🔗 Flexible symlinking**: Optional symbolic link creation (user-configurable)
+- **🧽 Safe operations**: Non-destructive by default — your files are protected
+- **⚡ Lightning fast**: Written in Go for maximum performance
+- **🧰 Intuitive CLI**: Simple interface powered by Cobra
+- **🛠 Git-independent**: No Git required (though you can use it if you want)
 
-⚡ Extremely fast (written in Go)
+## 📦 Installation
 
-🧰 Simple CLI interface powered by Cobra
+### Using Go
 
-🛠 Does not require Git (but you can use Git in .dotfiles if you want)
+```bash
+go install github.com/FranciscoHuenchunir/dotman-go@latest
+```
 
-📦 Installation
-go install github.com/FranciscoHuenchunir/dotmango@latest
+### Build from Source
 
-
-Or download a binary from Releases (si en el futuro los publicas).
-
-🚀 Quick Start
-1. Initialize DotmanGO
-dotman init
-
-
-This creates:
-
-~/.dotfiles/
-~/.config/dotman/config.yaml
-
-2. Add a file or directory
-dotman add ~/.config/nvim/init.lua
-
-
-This will:
-
-Move the file into ~/.dotfiles/.config/nvim/init.lua
-
-Optionally create a symlink at the original location (if enabled in config)
-
-3. List tracked dotfiles
-dotman list
-
-4. Remove a dotfile from management
-dotman remove ~/.config/nvim/init.lua
-
-⚙️ Configuration
-
-DotmanGO stores its configuration at:
-
-~/.config/dotman/config.yaml
-
-
-Example:
-
-symlink_on_add: false
-
-
-Set symlink_on_add: true to automatically create symlinks when adding files.
-
-📘 Commands Overview
-Command	Description
-dotman init	Initializes the .dotfiles directory
-dotman add <path>	Adds a file or directory to dotman
-dotman list	Shows all tracked dotfiles
-dotman remove <path>	Stops tracking a dotfile
-dotman sync	Synchronize symlinks (planned)
-dotman status	Shows changes (planned)
-📚 Philosophy
-
-DotmanGO follows three core principles:
-
-Simple logic → Move files; optionally symlink them.
-
-Predictable behavior → No magical Git tricks.
-
-User freedom → You decide when to use Git, symlinks, or plain file management.
-
-🛠 Build from source
-git clone https://github.com/FranciscoHuenchunir/dotmango
-cd dotmango
+```bash
+git clone https://github.com/FranciscoHuenchunir/dotman-go
+cd dotman-go
 go build -o dotman
+```
 
-🤝 Contributing
+## 🚀 Quick Start
 
-PRs are welcome. Issues are welcome.
-DotmanGO is still evolving, so any idea is appreciated.
+### 1. Initialize DotmanGO
+
+```bash
+dotman init
+```
+
+This creates the following structure:
+
+```
+~/.dotfiles/
+~/.dotfiles/.dotignore
+~/.config/dotman/config.yaml
+```
+
+### 2. Add a File or Directory
+
+```bash
+dotman add ~/.config/nvim/init.lua
+```
+
+What happens:
+- File moves to `~/.dotfiles/.config/nvim/init.lua`
+- Original path structure is preserved
+- Symlink created at original location (if enabled in config)
+
+### 3. List Tracked Dotfiles
+
+```bash
+dotman list
+```
+
+View all files currently managed by DotmanGO.
+
+### 4. Remove a Dotfile
+
+```bash
+dotman remove ~/.config/nvim/init.lua
+```
+
+Stop tracking a file without deleting it.
+
+## ⚙️ Configuration
+
+Configuration file location:
+
+```
+~/.config/dotman/config.yaml
+```
+
+### Example Configuration
+
+```yaml
+symlink_on_add: false
+```
+
+**Options:**
+- `symlink_on_add: true` — Automatically create symlinks when adding files
+- `symlink_on_add: false` — Move files without creating symlinks (default)
+
+## 📘 Commands
+
+| Command | Description |
+|---------|-------------|
+| `dotman init` | Initialize `.dotfiles` directory, create `.dotignore` and config file |
+| `dotman add <path>` | Add a file or directory to DotmanGO management |
+| `dotman list` | Display all tracked dotfiles |
+| `dotman remove <path>` | Stop tracking a dotfile |
+| `dotman sync` | Synchronize symlinks *(planned)* |
+| `dotman status` | Show changes in tracked files *(planned)* |
+
+## 📚 Philosophy
+
+DotmanGO is built on three core principles:
+
+1. **Simple logic** → Move files and optionally create symlinks — nothing more, nothing less
+2. **Predictable behavior** → No hidden Git operations or magic tricks
+3. **User freedom** → You choose when to use Git, symlinks, or plain file management
+
+## 🎯 Use Cases
+
+- **Developers**: Sync configs across machines without Git complexity
+- **System admins**: Quick backup and restore of critical config files
+- **Minimalists**: Simple dotfile management without unnecessary features
+- **Students**: Understand exactly what happens to your files
+
+## 🤝 Contributing
+
+Contributions are welcome! Whether you want to:
+- Report bugs
+- Suggest features
+- Submit pull requests
+- Improve documentation
+
+Feel free to open an issue or PR. DotmanGO is actively evolving, and community input helps shape its future.
+
+## 📄 License
+
+MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+Built with Go and [Cobra](https://github.com/spf13/cobra).
+
+---
+
+**Made with ❤️ by [Francisco Huenchunir](https://github.com/FranciscoHuenchunir)**
