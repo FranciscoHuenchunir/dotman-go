@@ -4,7 +4,7 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"dotman/pathutil"
+	"dotman/internal"
 	"fmt"
 	"log"
 	"os"
