@@ -68,7 +68,7 @@ func setupDotignore(dotPath string) {
 }
 
 func initDotman(cmd *cobra.Command, args []string) {
-	dotPath := pathutil.DotfilesPath()
+	dotPath := internal.DotfilesPath()
 	initDotfilesDir(dotPath)
 	setupDotignore(dotPath)
 }

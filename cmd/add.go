@@ -30,8 +30,8 @@ func mover(origen, destino string) error {
 	return os.Rename(origen, destino)
 }
 func addPathToDotfile(cmd *cobra.Command, args []string) {
-	home := pathutil.HomePath()
-	dotPath := pathutil.DotfilesPath()
+	home := internal.HomePath()
+	dotPath := internal.DotfilesPath()
 	userPath := args[0]
 
 	cwd, err := os.Getwd()
