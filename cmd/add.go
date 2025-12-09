@@ -1,5 +1,5 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 NAME HERE <franciscohuenchunir42@gmail.com francisco>
 */
 package cmd
 
@@ -17,6 +17,7 @@ import (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
+	Args:  cobra.MinimumNArgs(1),
 	Short: "Adds a file or directory to the .dotfiles repository",
 	Long: `The add command moves the specified file or directory into the ~/.dotfiles
 		directory while preserving its relative path. If the 'symlink_on_add' option is
@@ -28,25 +29,14 @@ func mover(origen, destino string) error {
 	fmt.Println("se movio")
 	return os.Rename(origen, destino)
 }
-func addPathToDotfile(cmd *cobra.Command, args []string) {
-	home := internal.HomePath()
-	dotPath := internal.DotfilesPath()
-	var userPath string
-
-	cwd, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(len(args))
-	if len(args) == 0 {
-		userPath = cwd
-	}
-	if userPath == "." {
-		userPath = cwd
-	}
+func addToDotfiles(userPath, home, dotPath string) {
 
 	// Get relative path from home
 	relativePath := strings.Split(userPath, home)
+
+	if len(relativePath) == 0 {
+		log.Fatal(relativePath)
+	}
 
 	// Build complete destination path
 	fullDestination := filepath.Join(dotPath, relativePath[1])
@@ -64,6 +54,36 @@ func addPathToDotfile(cmd *cobra.Command, args []string) {
 	fmt.Println("Source: ", userPath)
 	fmt.Println("Destination: ", fullDestination)
 	fmt.Println("✓ Moved successfully")
+
+}
+func addPathToDotfile(cmd *cobra.Command, args []string) {
+	home := internal.HomePath()
+	dotPath := internal.DotfilesPath()
+
+	userPath, err := os.Getwd()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Source: ", userPath)
+
+	if len(args) == 1 && args[0] == "." {
+		addToDotfiles(userPath, home, dotPath)
+	}
+
+	if len(args) >= 1 {
+
+		dirPaths, err := internal.Filter(args, userPath)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, dirPath := range dirPaths {
+			addToDotfiles(dirPath, home, dotPath)
+		}
+
+	}
 }
 func init() {
 	rootCmd.AddCommand(addCmd)
