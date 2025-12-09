@@ -1,12 +1,11 @@
 # DotmanGO
 
-A lightweight, fast, and minimalistic dotfiles manager written in Go. DotmanGO helps you organize, version, and synchronize your configuration files without relying on Git or complex setups — focusing on simplicity, portability, and predictability.
+A lightweight, fast, and minimalist dotfiles manager written in Go. DotmanGO helps you organize and synchronize your configuration files without relying on Git or complex setups, focusing on simplicity, portability, and predictability.
 
 ## Why DotmanGO?
 
 I tried GNU Stow — confusing directory structure.  
-I tried Git bare repos — too many arcane commands for something simple.  
-I tried chezmoi — powerful, but do I really need templating to move files?
+I tried using a bare Git repository, but it didn’t fully convince me.
 
 **I just wanted:**
 - Put my dotfiles in one place
