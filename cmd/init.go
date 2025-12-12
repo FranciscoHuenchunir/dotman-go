@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -46,31 +47,76 @@ func initDotfilesDir(dotPath string) {
 	}
 }
 
-func setupDotignore(dotPath string) {
-	ignoreFile := dotPath + "/dotignore"
+func createDotignore(dotPath string) {
+	ignoreFile := filepath.Join(dotPath, "dotignore")
 
-	_, err := os.Stat(ignoreFile)
+	internal.CreateFile(ignoreFile)
+	err := os.WriteFile(ignoreFile, []byte(".git/"), 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func createDataPaths(dotPath string) {
+	dataFile := filepath.Join(dotPath, "dotman.paths.")
+
+	internal.CreateFile(dataFile)
+
+}
+
+func initConfigDir(confPath string) {
+
+	_, err := os.Stat(confPath)
 
 	if os.IsNotExist(err) {
-		f, err := os.Create(ignoreFile)
-
+		err = os.Mkdir(confPath, 0755)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
-		defer f.Close()
+		fmt.Println("Carpeta creada en:", confPath)
 
-		err = os.WriteFile(ignoreFile, []byte(".git/"), 0666)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println("archivo creando en: ", f.Name())
 	}
+}
+func createConfigFile(confPath string) {
+	configFile := filepath.Join(confPath, "config.toml")
+
+	_, err := os.Stat(configFile)
+
+	if os.IsNotExist(err) {
+		file, err := os.Create(configFile)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+		content := `
+symlink_on_add = false
+dotfiles_dir = "~/.dotfiles"
+
+ignore_file = ".dotmanignore"
+`
+
+		err = os.WriteFile(configFile, []byte(content), 0666)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println("archivo creando en: ", file.Name())
+
+	}
+
 }
 
 func initDotman(cmd *cobra.Command, args []string) {
 	dotPath := internal.DotfilesPath()
+	confPath := internal.ConfigPath()
+
 	initDotfilesDir(dotPath)
-	setupDotignore(dotPath)
+	createDotignore(dotPath)
+	createDataPaths(dotPath)
+
+	initConfigDir(confPath)
+	createConfigFile(confPath)
 }
 
 func init() {
