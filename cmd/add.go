@@ -72,7 +72,7 @@ func addPathToDotfile(cmd *cobra.Command, args []string) {
 		addToDotfiles(userPath, home, dotPath)
 	}
 
-	if len(args) >= 1 {
+	if len(args) >= 2 {
 
 		dirPaths, err := internal.Filter(args, userPath)
 
