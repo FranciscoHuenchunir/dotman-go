@@ -59,7 +59,9 @@ This creates the following structure:
 ### 2. Add a File or Directory
 
 ```bash
-dotman add ~/.config/nvim/init.lua
+cd ~/.config/ 
+dotman add nvim
+dotman add starship.toml
 ```
 
 What happens:
@@ -75,13 +77,12 @@ dotman list
 
 View all files currently managed by DotmanGO.
 
-### 4. Remove a Dotfile
-
 ```bash
-dotman remove ~/.config/nvim/init.lua
+dotman list
+dotman remove nvim
 ```
 
-Stop tracking a file without deleting it.
+Removal is done by the **registered name** in `dotman.paths.yml`.
 
 ## ⚙️ Configuration
 
