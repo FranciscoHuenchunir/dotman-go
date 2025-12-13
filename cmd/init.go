@@ -58,7 +58,7 @@ func createDotignore(dotPath string) {
 }
 
 func createDataPaths(dotPath string) {
-	dataFile := filepath.Join(dotPath, "dotman.paths.")
+	dataFile := filepath.Join(dotPath, "dotman.paths.yml")
 
 	internal.CreateFile(dataFile)
 
