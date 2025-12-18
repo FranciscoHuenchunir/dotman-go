@@ -82,7 +82,7 @@ dotman list
 dotman remove nvim
 ```
 
-Removal is done by the **registered name** in `dotman.paths.yml`.
+Removal is done by the **registered name** in `.paths.yml`.
 
 ## ⚙️ Configuration
 
