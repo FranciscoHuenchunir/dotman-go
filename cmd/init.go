@@ -48,17 +48,22 @@ func initDotfilesDir(dotPath string) {
 }
 
 func createDotignore(dotPath string) {
-	ignoreFile := filepath.Join(dotPath, "dotignore")
+	ignoreFile := filepath.Join(dotPath, ".dotignore")
 
 	internal.CreateFile(ignoreFile)
-	err := os.WriteFile(ignoreFile, []byte(".git/"), 0666)
+
+	content := `
+.git/
+.paths.yml
+`
+	err := os.WriteFile(ignoreFile, []byte(content), 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func createDataPaths(dotPath string) {
-	dataFile := filepath.Join(dotPath, "dotman.paths.yml")
+	dataFile := filepath.Join(dotPath, ".paths.yml")
 
 	internal.CreateFile(dataFile)
 
