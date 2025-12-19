@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	// "path/filepath"
 
 	"github.com/spf13/cobra"
 )
