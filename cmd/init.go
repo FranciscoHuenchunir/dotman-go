@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
+	// "path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -47,30 +47,25 @@ func initDotfilesDir(dotPath string) {
 	}
 }
 
-func createDotignore(dotPath string) {
-	ignoreFile := filepath.Join(dotPath, ".dotignore")
-
-	internal.CreateFile(ignoreFile)
+func createDotignore(pathFile string) {
+	internal.CreateFile(pathFile)
 
 	content := `
 .git/
 .paths.yml
 `
-	err := os.WriteFile(ignoreFile, []byte(content), 0666)
+	err := os.WriteFile(pathFile, []byte(content), 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func createDataPaths(dotPath string) {
-	dataFile := filepath.Join(dotPath, ".paths.yml")
-
-	internal.CreateFile(dataFile)
+func createDataPaths(pathFile string) {
+	internal.CreateFile(pathFile)
 
 }
 
 func initConfigDir(confPath string) {
-
 	_, err := os.Stat(confPath)
 
 	if os.IsNotExist(err) {
@@ -82,13 +77,11 @@ func initConfigDir(confPath string) {
 
 	}
 }
-func createConfigFile(confPath string) {
-	configFile := filepath.Join(confPath, "config.toml")
-
-	_, err := os.Stat(configFile)
+func createConfigFile(pathFile string) {
+	_, err := os.Stat(pathFile)
 
 	if os.IsNotExist(err) {
-		file, err := os.Create(configFile)
+		file, err := os.Create(pathFile)
 
 		if err != nil {
 			log.Fatal(err)
@@ -101,7 +94,7 @@ dotfiles_dir = "~/.dotfiles"
 ignore_file = ".dotmanignore"
 `
 
-		err = os.WriteFile(configFile, []byte(content), 0666)
+		err = os.WriteFile(pathFile, []byte(content), 0666)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -113,15 +106,16 @@ ignore_file = ".dotmanignore"
 }
 
 func initDotman(cmd *cobra.Command, args []string) {
-	dotPath := internal.DotfilesPath()
-	confPath := internal.ConfigPath()
+	paths := internal.NewPaths()
 
-	initDotfilesDir(dotPath)
-	createDotignore(dotPath)
-	createDataPaths(dotPath)
+	initDotfilesDir(paths.Dotfiles)
+	initConfigDir(paths.Config)
 
-	initConfigDir(confPath)
-	createConfigFile(confPath)
+	createDotignore(paths.DotIngoreFile)
+	createDataPaths(paths.PathsFile)
+
+	createConfigFile(paths.ConfigFile)
+
 }
 
 func init() {
