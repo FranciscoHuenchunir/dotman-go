@@ -47,7 +47,7 @@ func initDotfilesDir(dotPath string) {
 }
 
 func createDotignore(pathFile string) {
-	internal.CreateFile(pathFile)
+	fs.CreateFile(pathFile)
 
 	content := `
 .git/
@@ -60,7 +60,7 @@ func createDotignore(pathFile string) {
 }
 
 func createDataPaths(pathFile string) {
-	internal.CreateFile(pathFile)
+	fs.CreateFile(pathFile)
 
 }
 
@@ -105,7 +105,7 @@ ignore_file = ".dotmanignore"
 }
 
 func initDotman(cmd *cobra.Command, args []string) {
-	paths := internal.NewPaths()
+	paths := *fs.NewPaths()
 
 	initDotfilesDir(paths.Dotfiles)
 	initConfigDir(paths.Config)

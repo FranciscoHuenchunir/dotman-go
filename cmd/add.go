@@ -24,7 +24,6 @@ var addCmd = &cobra.Command{
 		enabled in the configuration, a symbolic link will be created at the original location.`,
 	Run: addPathToDotfile,
 }
-var paths internal.Paths = *internal.NewPaths()
 
 func mover(origen, destino string) error {
 	fmt.Println("se movio")
@@ -58,6 +57,8 @@ func addToDotfiles(userPath, home, dotPath string) {
 
 }
 func addPathToDotfile(cmd *cobra.Command, args []string) {
+	paths := *fs.NewPaths()
+
 	home := paths.Home
 	dotPath := paths.Dotfiles
 
@@ -75,7 +76,7 @@ func addPathToDotfile(cmd *cobra.Command, args []string) {
 
 	if len(args) >= 2 {
 
-		dirPaths, err := internal.Filter(args, userPath)
+		dirPaths, err := fs.Filter(args, userPath)
 
 		if err != nil {
 			log.Fatal(err)
