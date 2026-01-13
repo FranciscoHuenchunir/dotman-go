@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"dotman/internal/fs"
+	"dotman/internal/model"
 	"dotman/internal/validate"
 	"fmt"
 	"log"
@@ -29,9 +30,7 @@ var addCmd = &cobra.Command{
 func move(source, destination string) error {
 	return os.Rename(source, destination)
 }
-
-func moveToDotfiles(sourcePath string) {
-	paths := fs.NewPaths()
+func resolveDotfileDestination(sourcePath string, paths fs.Paths) model.DotmanPath {
 	dotfilesRoot := paths.Dotfiles
 	homeDir := paths.Home
 
@@ -41,29 +40,39 @@ func moveToDotfiles(sourcePath string) {
 		log.Fatal(pathSegments)
 	}
 
-	fullDestination := filepath.Join(dotfilesRoot, pathSegments[1])
+	destination := filepath.Join(dotfilesRoot, pathSegments[1])
+	return model.DotmanPath{
+		Source:      sourcePath,
+		Destination: destination,
+		Linked:      false,
+	}
+}
 
-	destinationDir := filepath.Dir(fullDestination)
+func moveToDotfiles(path model.DotmanPath) {
+	destinationDir := filepath.Dir(path.Destination)
 	if err := os.MkdirAll(destinationDir, 0755); err != nil {
 		log.Fatal(err)
 	}
-	if err := move(sourcePath, fullDestination); err != nil {
+	if err := move(path.Source, path.Destination); err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println("✔ Path moved successfully")
-	fmt.Println("  ├─ Source:     ", sourcePath)
-	fmt.Println("  └─ Destination:", fullDestination)
+	fmt.Println("  ├─ Source:     ", path.Source)
+	fmt.Println("  └─ Destination:", path.Destination)
 }
+
 func handleAddPathCommand(cmd *cobra.Command, args []string) {
 	sourcePath, err := os.Getwd()
+	paths := fs.NewPaths()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	if len(args) == 1 && args[0] == "." {
-		moveToDotfiles(sourcePath)
+		dotfilePath := resolveDotfileDestination(sourcePath, paths)
+		moveToDotfiles(dotfilePath)
 		return
 	}
 	args, err = validate.CleanUniqueArgs(args)
@@ -77,8 +86,10 @@ func handleAddPathCommand(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, fPath := range targetPaths {
-		moveToDotfiles(fPath)
+
+	for _, target := range targetPaths {
+		dotfilePath := resolveDotfileDestination(target, paths)
+		moveToDotfiles(dotfilePath)
 	}
 
 }

@@ -50,7 +50,7 @@ func createDataPaths(pathFile string) {
 }
 
 func initDotman(cmd *cobra.Command, args []string) {
-	paths := *fs.NewPaths()
+	paths := fs.NewPaths()
 
 	initDotfilesDir(paths.Dotfiles)
 	createDataPaths(paths.PathsFile)

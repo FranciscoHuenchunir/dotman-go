@@ -12,13 +12,13 @@ type Paths struct {
 	PathsFile string
 }
 
-func NewPaths() *Paths {
+func NewPaths() Paths {
 	usr, err := user.Current()
 	if err != nil {
 		log.Fatal("error al obtener el usuario actual:", err)
 	}
 
-	return &Paths{
+	return Paths{
 		Home:      usr.HomeDir,
 		Dotfiles:  filepath.Join(usr.HomeDir, ".dotfiles"),
 		PathsFile: filepath.Join(usr.HomeDir, ".dotfiles", ".paths.json"),

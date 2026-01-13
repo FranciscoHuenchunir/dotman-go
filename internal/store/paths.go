@@ -1,16 +1,15 @@
 package store
 
 import (
+	"dotman/internal/fs"
 	"dotman/internal/model"
 	"encoding/json"
 	"os"
 )
 
-func LoadPaths(file string) ([]model.DotmanPath, error) {
-	// modelPaths := fs.NewPaths()
-	// file := modelPaths.PathsFile
-	//
-	data, err := os.ReadFile(file)
+func LoadPaths(paths fs.Paths) ([]model.DotmanPath, error) {
+
+	data, err := os.ReadFile(paths.PathsFile)
 	if os.IsNotExist(err) {
 		return []model.DotmanPath{}, nil
 	}
@@ -29,14 +28,12 @@ func LoadPaths(file string) ([]model.DotmanPath, error) {
 	return dotmanPaths, nil
 }
 
-func SavePaths(file string, paths []model.DotmanPath) error {
-	// modelPaths := fs.NewPaths()
-	// file := modelPaths.PathsFile
+func SavePaths(paths fs.Paths, items []model.DotmanPath) error {
 
 	data, err := json.MarshalIndent(paths, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	return os.WriteFile(file, data, 0644)
+	return os.WriteFile(paths.PathsFile, data, 0644)
 }
