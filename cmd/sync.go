@@ -1,6 +1,5 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -13,13 +12,18 @@ import (
 // syncCmd represents the sync command
 var syncCmd = &cobra.Command{
 	Use:   "sync",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Crea enlaces simbólicos para los dotfiles gestionados por Dotman",
+	Long: `El comando sync crea enlaces simbólicos entre los dotfiles
+almacenados en el directorio de Dotman y sus ubicaciones originales
+en el sistema.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Este comando permite:
+- Aplicar los dotfiles gestionados por Dotman al sistema
+- Reemplazar archivos existentes mediante enlaces simbólicos
+- Facilitar la restauración de configuraciones en un nuevo sistema
+
+sync no copia archivos: únicamente crea enlaces simbólicos
+para mantener una única fuente de verdad.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("sync called")
 	},

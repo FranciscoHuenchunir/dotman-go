@@ -6,7 +6,6 @@ package cmd
 import (
 	"dotman/internal/fs"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -45,62 +44,8 @@ func initDotfilesDir(dotPath string) {
 		fmt.Println("Carpeta creada en:", dotPath)
 	}
 }
-
-func createDotignore(pathFile string) {
-	fs.CreateFile(pathFile)
-
-	content := `
-.git/
-.paths.yml
-`
-	err := os.WriteFile(pathFile, []byte(content), 0666)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 func createDataPaths(pathFile string) {
 	fs.CreateFile(pathFile)
-
-}
-
-func initConfigDir(confPath string) {
-	_, err := os.Stat(confPath)
-
-	if os.IsNotExist(err) {
-		err = os.Mkdir(confPath, 0755)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println("Carpeta creada en:", confPath)
-
-	}
-}
-func createConfigFile(pathFile string) {
-	_, err := os.Stat(pathFile)
-
-	if os.IsNotExist(err) {
-		file, err := os.Create(pathFile)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer file.Close()
-		content := `
-symlink_on_add = false
-dotfiles_dir = "~/.dotfiles"
-
-ignore_file = ".dotmanignore"
-`
-
-		err = os.WriteFile(pathFile, []byte(content), 0666)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Println("archivo creando en: ", file.Name())
-
-	}
 
 }
 
@@ -108,13 +53,7 @@ func initDotman(cmd *cobra.Command, args []string) {
 	paths := *fs.NewPaths()
 
 	initDotfilesDir(paths.Dotfiles)
-	initConfigDir(paths.Config)
-
-	createDotignore(paths.DotIngoreFile)
 	createDataPaths(paths.PathsFile)
-
-	createConfigFile(paths.ConfigFile)
-
 }
 
 func init() {

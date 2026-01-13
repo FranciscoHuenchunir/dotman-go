@@ -1,41 +1,25 @@
 package fs
 
 import (
-	"fmt"
-	"log"
-	"os"
+	"path/filepath"
 	"strings"
 )
 
-func CreateFile(file string) {
-	_, err := os.Stat(file)
-
-	if os.IsNotExist(err) {
-		file, err := os.Create(file)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer file.Close()
-
-		fmt.Println("archivo creando en: ", file.Name())
+func TildeToHome(path string) string {
+	paths := NewPaths()
+	if path == "~" {
+		return paths.Home
 	}
+	if path == paths.Home {
+		return path
+	}
+	return filepath.Join(paths.Home, path[2:])
 }
-func ValidatePaths(paths []string) (map[string]struct{}, error) {
-	if len(paths) == 0 {
-		return nil, fmt.Errorf("no hay nombres de directorio en la lista")
+func HomeToTilde(path string) string {
+	paths := NewPaths()
+	if rest, ok := strings.CutPrefix(path, paths.Home); ok {
+		return "~" + rest
 	}
 
-	validNames := make(map[string]struct{})
-
-	for _, name := range paths {
-		n := strings.TrimSpace(name)
-		if n == "" {
-			return nil, fmt.Errorf("un nombre está vacío o solo tiene espacios")
-		}
-
-		validNames[n] = struct{}{}
-	}
-
-	return validNames, nil
+	return path
 }

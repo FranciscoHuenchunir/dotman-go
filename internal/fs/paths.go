@@ -2,18 +2,14 @@ package fs
 
 import (
 	"log"
-	"os"
 	"os/user"
 	"path/filepath"
 )
 
 type Paths struct {
-	Home          string
-	Dotfiles      string
-	Config        string
-	DotIngoreFile string
-	PathsFile     string
-	ConfigFile    string
+	Home      string
+	Dotfiles  string
+	PathsFile string
 }
 
 func NewPaths() *Paths {
@@ -22,17 +18,9 @@ func NewPaths() *Paths {
 		log.Fatal("error al obtener el usuario actual:", err)
 	}
 
-	configDir, err := os.UserConfigDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	return &Paths{
-		Home:          usr.HomeDir,
-		Dotfiles:      filepath.Join(usr.HomeDir, ".dotfiles"),
-		Config:        filepath.Join(configDir, "dotman"),
-		DotIngoreFile: filepath.Join(usr.HomeDir, ".dotfiles", ".dotignore"),
-		PathsFile:     filepath.Join(usr.HomeDir, ".dotfiles", ".paths.yml"),
-		ConfigFile:    filepath.Join(configDir, "dotman", "config.toml"),
+		Home:      usr.HomeDir,
+		Dotfiles:  filepath.Join(usr.HomeDir, ".dotfiles"),
+		PathsFile: filepath.Join(usr.HomeDir, ".dotfiles", ".paths.json"),
 	}
 }

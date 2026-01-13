@@ -52,8 +52,6 @@ This creates the following structure:
 
 ```
 ~/.dotfiles/
-~/.dotfiles/.dotignore
-~/.config/dotman/config.yaml
 ```
 
 ### 2. Add a File or Directory
@@ -69,49 +67,13 @@ What happens:
 - Original path structure is preserved
 - Symlink created at original location (if enabled in config)
 
-### 3. List Tracked Dotfiles
-
-```bash
-dotman list
-```
-
-View all files currently managed by DotmanGO.
-
-```bash
-dotman list
-dotman remove nvim
-```
-
-Removal is done by the **registered name** in `.paths.yml`.
-
-## ⚙️ Configuration
-
-Configuration file location:
-
-```
-~/.config/dotman/config.yaml
-```
-
-### Example Configuration
-
-```yaml
-symlink_on_add: false
-```
-
-**Options:**
-- `symlink_on_add: true` — Automatically create symlinks when adding files
-- `symlink_on_add: false` — Move files without creating symlinks (default)
-
 ## 📘 Commands
 
 | Command | Description |
 |---------|-------------|
 | `dotman init` | Initialize `.dotfiles` directory, create `.dotignore` and config file |
 | `dotman add <path>` | Add a file or directory to DotmanGO management |
-| `dotman list` | Display all tracked dotfiles |
-| `dotman remove <path>` | Stop tracking a dotfile |
 | `dotman sync` | Synchronize symlinks *(planned)* |
-| `dotman status` | Show changes in tracked files *(planned)* |
 
 ## 📚 Philosophy
 
