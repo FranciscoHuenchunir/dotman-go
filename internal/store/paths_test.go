@@ -22,7 +22,6 @@ func TestSavePaths(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-
 		_, err = os.Stat(testPaths.PathsFile)
 		if err != nil {
 			t.Error("el archivo no se creo")
